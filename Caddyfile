@@ -1,0 +1,21 @@
+:8080 {
+	root * .
+	file_server
+
+	encode gzip
+
+	@html {
+		path *.html
+	}
+	header @html Content-Type "text/html; charset=utf-8"
+
+	@css {
+		path *.css
+	}
+	header @css Content-Type "text/css; charset=utf-8"
+
+	@js {
+		path *.js
+	}
+	header @js Content-Type "application/javascript; charset=utf-8"
+}
